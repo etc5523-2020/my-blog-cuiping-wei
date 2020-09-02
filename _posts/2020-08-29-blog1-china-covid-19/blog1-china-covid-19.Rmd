@@ -1,0 +1,74 @@
+---
+title: "Can we go out now?"
+description: |
+  With the COVID-19 outbreak worldwide, what is the current situation in China? Do we need to panic? This post briefly tells the story behind the numbers for COVID-19 in China through tables. 
+author:
+  - name: Cuiping Wei
+    url: https://tira-awsome-story.netlify.app
+date: August 30, 2020
+categories: 
+  - COVID-19
+output:
+  distill::distill_article:
+    self_contained: false
+bibliography: references.bib
+preview: images/COVID-19.png
+resources:
+  exclude:
+    data/
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{r load-libraries}
+library(coronavirus)
+library(tidyverse)
+library(DT)
+library(formattable)
+library(plotly)
+library(lubridate)
+library(knitr)
+library(dplyr)
+library(sparkline)
+library(reactable)
+library(htmltools)
+library(kableExtra)
+```
+
+## Data acquisition
+
+### COVID-19 data
+The incidence data is obtained from R package `coronavirus`[@coronavirus] provided by RamiKrispin, which contains COVID-19 data from 188 countries or regions, and the raw data collected and arranged by the Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE). In this blog, I will focus on China data, which contains 22,440 observations from 2020-01-22 to 2020-08-28.   
+
+```{r read-covid19-data}
+# read data
+data("coronavirus")
+
+# daily data for all province in China
+covid19_chn<-coronavirus %>% 
+  filter(date <= 2020-08-28) %>% 
+  filter(country %in% c("China","Taiwan*")) %>% 
+  mutate(province = ifelse(country=="Taiwan*", "Taiwan", province),
+         country = ifelse(country=="Taiwan*", "China", country)) %>% 
+  mutate(month = month(date, label = TRUE))
+```
+
+### Population data
+
+The population data is collected by the United Nations Department for Economic and Social Affairs(UNDESA). I downloaded and obtained the population of China in 2019 from [UNDESA]("https://population.un.org/wpp/Download/Standard/CSV/")[@desa2019world].   
+
+```{r}
+#read population data
+world_population <- read_csv(here::here("data/WPP2019_TotalPopulationBySex.csv")) 
+
+# filter China
+pop_chn <- world_population %>% 
+  filter(Location == "China",
+         Time == 2019) %>% 
+  select(PopTotal)
+
+```
+
+
