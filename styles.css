@@ -1,0 +1,17 @@
+
+.distill-site-nav {
+  background-color: #6B9080;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+html, body, p {
+  
+  font-weight: 200;
+  line-height: 1.7; 
+  font-size: 1.0em;
+  text-align:justify;
+  color: #333333;
+  font-style: normal;
+  
+}

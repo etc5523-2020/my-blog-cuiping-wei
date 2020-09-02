@@ -19,29 +19,30 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>My Blog: About this blog</title>
+  <title>The story of numbers: Welcome to my blog!</title>
 
-  <meta property="description" itemprop="description" content="Some additional details about the blog"/>
+  <meta property="description" itemprop="description" content="For me, a storyteller!"/>
 
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="My Blog: About this blog"/>
+  <meta property="og:title" content="The story of numbers: Welcome to my blog!"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Some additional details about the blog"/>
+  <meta property="og:description" content="For me, a storyteller!"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="My Blog"/>
+  <meta property="og:site_name" content="The story of numbers"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="My Blog: About this blog"/>
-  <meta property="twitter:description" content="Some additional details about the blog"/>
+  <meta property="twitter:title" content="The story of numbers: Welcome to my blog!"/>
+  <meta property="twitter:description" content="For me, a storyteller!"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About this blog"]},{"type":"character","attributes":{},"value":["Some additional details about the blog"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to my blog!"]},{"type":"character","attributes":{},"value":["For me, a storyteller!"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1273,8 +1274,28 @@
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <style type="text/css">
+
+  .distill-site-nav {
+    background-color: #6B9080;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  html, body, p {
+    
+    font-weight: 200;
+    line-height: 1.7; 
+    font-size: 1.0em;
+    text-align:justify;
+    color: #333333;
+    font-style: normal;
+    
+  }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -1283,7 +1304,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About this blog","description":"Some additional details about the blog","authors":[]}
+{"title":"Welcome to my blog!","description":"For me, a storyteller!","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1291,11 +1312,17 @@
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">My Blog</a>
+<a href="index.html" class="title">The story of numbers</a>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
+<a href="https://github.com/cuiping-wei">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="index.xml">
+<i class="fa fa-rss" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -1305,13 +1332,21 @@
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>About this blog</h1>
-<p><p>Some additional details about the blog</p></p>
+<h1>Welcome to my blog!</h1>
+<p><p>For me, a storyteller!</p></p>
 </div>
 
 
 <div class="d-article">
-
+<p>Welcome to the digital world! Here, you may find some interesting insights from my blog. With this blog, I want to share digital stories, mainly using R to complete the construction of the story.<br />
+#### Contact</p>
+<!-- Add icon library -->
+<p><link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></p>
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+<a href="https://github.com/cuiping-wei" target="_blank" class="fa fa-github"  style="font-size:36px;"></a> <a href="mailto:tttira@hotmail.com" target="_blank" class="fa fa-envelope"  style="font-size:36px;"></a>
+</p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1323,7 +1358,12 @@
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+<h3 id="updates-and-corrections">Corrections</h3>
+<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/etc5523-2020/my-blog-cuiping-wei/issues/new">create an issue</a> on the source repository.</p>
+<h3 id="reuse">Reuse</h3>
+<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/etc5523-2020/my-blog-cuiping-wei">https://github.com/etc5523-2020/my-blog-cuiping-wei</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->

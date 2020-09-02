@@ -1,18 +1,22 @@
 [
   {
-    "path": "posts/welcome/",
-    "title": "Welcome to My Blog",
-    "description": "Welcome to our new blog, My Blog. We hope you enjoy \nreading what we have to say!",
+    "path": "posts/2020-08-29-blog1-china-covid-19/",
+    "title": "Can we go out now?",
+    "description": "With the COVID-19 outbreak worldwide, what is the current situation in China? Do we need to panic? This post briefly tells the story behind the numbers for COVID-19 in China through tables.",
     "author": [
       {
-        "name": "Nora Jones",
+        "name": "Cuiping Wei",
         "url": "https://example.com/norajones"
       }
     ],
-    "date": "2020-08-27",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-08-27T20:34:33+10:00",
-    "input_file": {}
+    "date": "2020-08-30",
+    "categories": [
+      "COVID-19"
+    ],
+    "preview": "posts/2020-08-29-blog1-china-covid-19/images/COVID-19.png",
+    "last_modified": "2020-08-30T23:58:55+10:00",
+    "input_file": {},
+    "preview_width": 810,
+    "preview_height": 374
   }
 ]

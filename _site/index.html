@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
+  <link rel="alternate" type="application/rss+xml" href="https://tira-awsome-story.netlify.app/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -19,26 +20,27 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>My Blog</title>
+  <title>The story of numbers: Data analysis - The story of numbers</title>
 
 
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="My Blog"/>
+  <meta property="og:title" content="The story of numbers: Data analysis - The story of numbers"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="My Blog"/>
+  <meta property="og:site_name" content="The story of numbers"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="My Blog"/>
+  <meta property="twitter:title" content="The story of numbers: Data analysis - The story of numbers"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["My Blog"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","descrition","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Data analysis - The story of numbers"]},{"type":"character","attributes":{},"value":["My own personal blog"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1270,8 +1272,28 @@
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <style type="text/css">
+
+  .distill-site-nav {
+    background-color: #6B9080;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  html, body, p {
+    
+    font-weight: 200;
+    line-height: 1.7; 
+    font-size: 1.0em;
+    text-align:justify;
+    color: #333333;
+    font-style: normal;
+    
+  }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -1280,7 +1302,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"My Blog","authors":[]}
+{"title":"Data analysis - The story of numbers","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1288,11 +1310,17 @@
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">My Blog</a>
+<a href="index.html" class="title">The story of numbers</a>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
+<a href="https://github.com/cuiping-wei">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="index.xml">
+<i class="fa fa-rss" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -1617,23 +1645,59 @@ function init_posts_list() {
 
 
 
-<div class="posts-container posts-apply-limit l-page">
+<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
-<h1 class="posts-list-caption">My Blog</h1>
-<a href="posts/welcome/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<h1 class="posts-list-caption">Data analysis - The story of numbers</h1>
+<a href="posts/2020-08-29-blog1-china-covid-19/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["COVID-19"]}</script>
 <div class="metadata">
-<div class="publishedDate">Aug. 27, 2020</div>
+<div class="publishedDate">Aug. 30, 2020</div>
 </div>
 <div class="thumbnail">
-<img/>
+<img data-src="posts/2020-08-29-blog1-china-covid-19/images/COVID-19.png"/>
 </div>
 <div class="description">
-<h2>Welcome to My Blog</h2>
-<p>Welcome to our new blog, My Blog. We hope you enjoy 
-reading what we have to say!</p>
+<h2>Can we go out now?</h2>
+<p>With the COVID-19 outbreak worldwide, what is the current situation in China? Do we need to panic? This post briefly tells the story behind the numbers for COVID-19 in China through tables.</p>
 </div>
 </a>
+</div>
+<div class="posts-sidebar">
+<div><div class="sidebar-section custom">
+  <h3>About</h3>
+  This blog explores the story behind the numbers with R.
+</div>
+
+<div class="sidebar-section custom">
+  <h3>Search</h3>
+  <form action="https://www.google.com/">
+    <input type="text" name="q" placeholder="Search...">
+    <input type="hidden" name="sites" 
+      value="https://www.google.com/"> <!-- Replace with your blog URL -->
+    <!--<button type="submit">Search</button>-->
+  </form>
+</div>
+</div>
+<div class="sidebar-section subscribe">
+<h3>Subscribe</h3>
+<form method='post' action='https://blogtrottr.com'>
+  <p>Enjoy this blog? Get notified of new posts via email:</p>
+  <input type='text' name='btr_email' />
+  <input type='hidden' name='btr_url'
+         value='https://beta.rstudioconnect.com/content/11424/index.xml'/>
+  <input type='hidden' name='schedule_type' value='0' />
+  <input type='submit' value='Subscribe' />
+</form>
+</div>
+<div class="sidebar-section categories">
+<h3>Categories</h3>
+<ul>
+<li>
+<a href="#COVID-19">COVID-19</a>
+<span class="category-count">(1)</span>
+</li>
+</ul>
+</div>
 </div>
 <div class="posts-more">
 <a href="#">More articles &raquo;</a>
@@ -1642,7 +1706,7 @@ reading what we have to say!</p>
 <!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>My Blog</h1>
+<h1>Data analysis - The story of numbers</h1>
 
 </div>
 
@@ -1660,7 +1724,12 @@ reading what we have to say!</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+<h3 id="updates-and-corrections">Corrections</h3>
+<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/etc5523-2020/my-blog-cuiping-wei/issues/new">create an issue</a> on the source repository.</p>
+<h3 id="reuse">Reuse</h3>
+<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/etc5523-2020/my-blog-cuiping-wei">https://github.com/etc5523-2020/my-blog-cuiping-wei</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
