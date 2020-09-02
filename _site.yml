@@ -1,12 +1,30 @@
-name: "www"
-title: "My Blog"
+name: "Blog"
+title: "The story of numbers"
 description: |
   My Blog
 output_dir: "_site"
+base_url: https://tira-awsome-story.netlify.app
+repository_url: https://github.com/etc5523-2020/my-blog-cuiping-wei
+creative_commons: CC BY
 navbar:
   right:
     - text: "Home"
       href: index.html
     - text: "About"
       href: about.html
-output: distill::distill_article
+    - icon: fa fa-github
+      href: https://github.com/cuiping-wei
+    - icon: fa fa-rss
+      href: index.xml
+rss:
+  full_content: TRUE
+  categories:
+    - R
+    - COVID-19
+collections:
+  posts:
+    subscribe: _subscribe.html
+    custom: _custom.html
+output: 
+  distill::distill_article:
+     css: styles.css
