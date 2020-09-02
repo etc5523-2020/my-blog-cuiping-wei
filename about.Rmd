@@ -1,9 +1,14 @@
 ---
-title: "About this blog"
+title: "Welcome to my blog!"
 description: |
-  Some additional details about the blog
+  For me, a storyteller!
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+```
+
+Welcome to the digital world! Here, you may find some interesting insights from my blog. With this blog, I want to share digital stories, mainly using R to complete the construction of the story.   
+#### Contact
+```{r child="./data/rmd/contact.Rmd"}
 ```
