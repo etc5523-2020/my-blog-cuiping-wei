@@ -48,7 +48,7 @@ data("coronavirus")
 
 # daily data for all province in China
 covid19_chn<-coronavirus %>% 
-  filter(date <= 2020-08-28) %>% 
+  filter(date <= '2020-08-28') %>% 
   filter(country %in% c("China","Taiwan*")) %>% 
   mutate(province = ifelse(country=="Taiwan*", "Taiwan", province),
          country = ifelse(country=="Taiwan*", "China", country)) %>% 
@@ -69,6 +69,77 @@ pop_chn <- world_population %>%
          Time == 2019) %>% 
   select(PopTotal)
 
+```
+
+
+## Analysis
+
+
+```{r covid-rate}
+# calculate rate for confirmed, death, recovered and active
+# ause all the proportion is too small, so all added 0.1
+covid_rate<-covid19_chn %>% 
+  group_by(type,month) %>%
+  summarise(total_cases = sum(cases)) %>%
+  pivot_wider(names_from = type, 
+              values_from = total_cases) %>%
+  mutate(active = confirmed - death - recovered) %>%
+  mutate(active_total = cumsum(active),
+         population = pop_chn$PopTotal*1000) %>%
+  mutate(confirmed_rates = ((1000*confirmed/population) + 0.01),
+         active_rates = ((1000*active_total/population) +0.01),
+         recovered_rates = ((1000*recovered/population) +0.01),
+         dead_rates = ((1000*death/population) +0.01)) %>% 
+  select(-c(2:7)) %>% 
+  pivot_longer(2:5, 
+               names_to = "type", 
+               values_to = "rate") %>% 
+  mutate(rate = round(rate,4)) %>% 
+  pivot_wider(names_from = month, 
+              values_from = rate)
+  
+```
+
+```{r rate, fig.cap="The rates for confirmed cases, deaths, recovered cases and active rates of COVID-19 in China from January to August. All the rates were added by 0.1."}
+
+as.datatable(formattable(covid_rate , 
+              align =c("r",rep("c", NCOL(covid_rate) - 1)),
+              list(`type` = formatter("span", style = ~formattable::style(color = "grey", font.weight = "bold")), 
+                   `Feb`= formatter("span", style = ~ formattable::style(color = ifelse(`Feb` >`Jan`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `Mar`= formatter("span", style = ~ formattable::style(color = ifelse(`Mar` >`Feb`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `Apr`= formatter("span", style = ~ formattable::style(color = ifelse(`Apr` >`Mar`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `May`= formatter("span", style = ~ formattable::style(color = ifelse(`May` >`Apr`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `Jun`= formatter("span", style = ~ formattable::style(color = ifelse(`Jun` >`May`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `Jul`= formatter("span", style = ~ formattable::style(color = ifelse(`Jul` >`Jun`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
+                   `Aug`= formatter("span", style = ~ formattable::style(color = ifelse(`Aug` >`Jul`, "#EF6351", "#7AC5CD"), font.weight = "bold"))
+                   ),
+             rownames = FALSE,
+             option = list(dom = 't')))
+```
+
+
+
+```{r death}
+# find the outlier for death
+death_outlier <- covid19_chn %>% 
+  pivot_wider(names_from = type, values_from = cases) %>% 
+  group_by(month, province) %>% 
+  summarise(death = sum(death)) %>% 
+  filter(month == "Apr") %>% 
+  arrange(-death) %>% 
+  head(3) %>% 
+  kable(caption = "The top 3 deaths for province of COVID-19 on April in China") %>% 
+  kable_styling(bootstrap_options = 
+                  c("striped", "condensed"), 
+                  full_width = F, 
+                  position = "center",
+                  latex_options = c("hold_position")) %>% 
+    row_spec(1, 
+             bold = T, 
+             color = "white", 
+             background = "#7AC5CD")
+
+death_outlier
 ```
 
 
