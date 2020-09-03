@@ -117,9 +117,9 @@ as.datatable(formattable(covid_rate ,
                    `Jun`= formatter("span", style = ~ formattable::style(color = ifelse(`Jun` >`May`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
                    `Jul`= formatter("span", style = ~ formattable::style(color = ifelse(`Jul` >`Jun`, "#EF6351", "#7AC5CD"), font.weight = "bold")),
                    `Aug`= formatter("span", style = ~ formattable::style(color = ifelse(`Aug` >`Jul`, "#EF6351", "#7AC5CD"), font.weight = "bold"))
-                   ),
+                   )),
              rownames = FALSE,
-             option = list(dom = 't')))
+             option = list(dom = 't'))
 ```
 
 ```{r death}
