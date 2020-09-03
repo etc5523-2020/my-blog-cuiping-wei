@@ -1,8 +1,12 @@
-<form method='post' action='https://blogtrottr.com'>
+<form action="user" method="post" target="iframe">
   <p>Enjoy this blog? Get notified of new posts via email:</p>
-  <input type='text' name='btr_email' />
-  <input type='hidden' name='btr_url'
-         value='https://beta.rstudioconnect.com/content/11424/index.xml'/>
-  <input type='hidden' name='schedule_type' value='0' />
-  <input type='submit' value='Subscribe' />
-</form>
+  <input type='text' placeholder = "Name" name='name' required/>
+  <input type='text' placeholder = "Email address" name='btr_email' required/>
+
+  <div class="container">
+    <input type="submit" value="Subscribe" onclick="javascript:alert('Submit successfully! ');"/>
+  </div>
+</form
+
+<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+

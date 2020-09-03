@@ -286,6 +286,6 @@ From the above analysis, we can infer that COVID-19 is under control in China, w
 Hopefully, this blog post can provide you with useful information.    
 Stay safe and keep healthy.  
 
-# Acknowledgments {.appendix}
+## Acknowledgments 
 
 Thanks for all contributors for the R packages used in this blog. [@tidyverse] [@DT] [@formattable] [@lubridate] [@knitr] [@dplyr] [@sparkline] [@reactable] [@html] [@kable]
