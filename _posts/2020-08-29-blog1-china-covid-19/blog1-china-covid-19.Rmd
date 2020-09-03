@@ -34,6 +34,7 @@ library(sparkline)
 library(reactable)
 library(htmltools)
 library(kableExtra)
+library(plotly)
 ```
 
 There was an outbreak of COVID-19 in my country from January and people had to wear masks when they went out, and there was a sense of panic and fear in the air. I still vividly remember the feeling of panic when I had a low fever in early February.  Later I went to the hospital for blood and CT tests and was told I was healthy. It seems that the low fever in those days was caused by panic and anxiety about the COVID-19.    
