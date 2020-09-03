@@ -10,7 +10,7 @@
     <lastBuildDate>Sat, 29 Aug 2020 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Can we go out now?</title>
-      <dc:creator>Cuiping Wei</dc:creator>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Cuiping Wei</dc:creator>
       <link>https://awsome-number-story.netlify.app/posts/2020-08-29-blog1-china-covid-19</link>
       <description>
 
@@ -184,11 +184,11 @@ $(document).ready(function () {
 &lt;/script&gt;
 
 </description>
-      <distill:md5>3dd0669d8019010434877d0a2a22b539</distill:md5>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">3dd0669d8019010434877d0a2a22b539</distill:md5>
       <category>COVID-19</category>
       <guid>https://awsome-number-story.netlify.app/posts/2020-08-29-blog1-china-covid-19</guid>
       <pubDate>Sat, 29 Aug 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://awsome-number-story.netlify.app/posts/2020-08-29-blog1-china-covid-19/images/COVID-19.png" medium="image" type="image/png" width="810" height="374"/>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://awsome-number-story.netlify.app/posts/2020-08-29-blog1-china-covid-19/images/COVID-19.png" medium="image" type="image/png" width="810" height="374"/>
     </item>
   </channel>
 </rss>

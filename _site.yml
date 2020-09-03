@@ -3,7 +3,7 @@ title: "The story of numbers"
 description: |
   My Blog
 output_dir: "_site"
-base_url: https://tira-awsome-story.netlify.app
+base_url: https://awsome-number-story.netlify.app
 repository_url: https://github.com/etc5523-2020/my-blog-cuiping-wei
 creative_commons: CC BY
 navbar:

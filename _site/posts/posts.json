@@ -6,7 +6,7 @@
     "author": [
       {
         "name": "Cuiping Wei",
-        "url": "https://example.com/norajones"
+        "url": "https://tira-awsome-story.netlify.app"
       }
     ],
     "date": "2020-08-30",
@@ -14,8 +14,8 @@
       "COVID-19"
     ],
     "preview": "posts/2020-08-29-blog1-china-covid-19/images/COVID-19.png",
-    "last_modified": "2020-08-30T23:58:55+10:00",
-    "input_file": {},
+    "last_modified": "2020-09-03T12:15:28+10:00",
+    "input_file": "blog1-china-covid-19.utf8.md",
     "preview_width": 810,
     "preview_height": 374
   }
