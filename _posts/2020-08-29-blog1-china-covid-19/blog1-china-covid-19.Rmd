@@ -4,7 +4,7 @@ description: |
   With the COVID-19 outbreak worldwide, what is the current situation in China? Do we need to panic? This post briefly tells the story behind the numbers for COVID-19 in China through tables. 
 author:
   - name: Cuiping Wei
-    url: https://tira-awsome-story.netlify.app
+    url: https://awsome-number-story.netlify.app
 date: August 30, 2020
 categories: 
   - COVID-19
@@ -27,7 +27,6 @@ library(coronavirus)
 library(tidyverse)
 library(DT)
 library(formattable)
-library(plotly)
 library(lubridate)
 library(knitr)
 library(dplyr)
@@ -37,6 +36,9 @@ library(htmltools)
 library(kableExtra)
 ```
 
+There was an outbreak of COVID-19 in my country from January and people had to wear masks when they went out, and there was a sense of panic and fear in the air. I still vividly remember the feeling of panic when I had a low fever in early February.  Later I went to the hospital for blood and CT tests and was told I was healthy. It seems that the low fever in those days was caused by panic and anxiety about the COVID-19.    
+As the number of cases and deaths increases, if people can't see or understand the story behind the numbers like me before, they will only be more anxious. Now I am a student of Master of Business Analytics, I have learned more about data analysis, it will be interesting to analyze the current situation in my country. Do we still need to be panic? Can we go out safely?    
+In this blog, I will focus on three tables to tell the story behind the numbers for COVID-19 in China.   
 
 ## Data acquisition
 
@@ -75,6 +77,7 @@ pop_chn <- world_population %>%
 
 ## Analysis
 
+Figure \@ref(fig:rate) shows us that the rates for confirmed cases, active cases, recovered cases and death from January to August in 2020. Red represents an upward trend compared to the previous month's data, while blue represents a downward trend or no change. We can see that the percentages in February are on the rise and higher than other months, which is due to the outbreak of COVID-19 in February in China. Another unusual trend is that the proportion of confirmed cases and active cases increased in June and July, while recovered cases increased in July and August. That is in line with epidemiological trends, in which the curve of cure lags behind that of new cases. Unexpectedly, the death rate significantly increased in April. When I further analyzed the death data for April, I found there were 1,325 death cases in Hubei province in April, as shown in Table \@ref(tab:death). That's because authorities in Hubei province revised COVID-19 death due to miscounting in the early days of the outbreak[@xia_2020].   
 
 ```{r covid-rate}
 # calculate rate for confirmed, death, recovered and active
@@ -118,8 +121,6 @@ as.datatable(formattable(covid_rate ,
              option = list(dom = 't')))
 ```
 
-
-
 ```{r death}
 # find the outlier for death
 death_outlier <- covid19_chn %>% 
@@ -143,6 +144,10 @@ death_outlier <- covid19_chn %>%
 death_outlier
 ```
 
+What about COVID-19 in each province?   
+Figure \@ref(fig:bar) shows the bar chart of the number of confirmed cases, deaths and recovered cases in each province from January to August. It's easy to find that most of the provinces in China had a peak in February and began to decline in March, or even maintained 0 for a long time. As Chang[@chang] states, strict control policies can effectively slow down the spread of COVID-19, and China locked down Wuhan in late January does confirm this. Moreover, we can find some different trends in some provinces, with Beijing had a significant increase in the number of confirmed cases in June and Heilongjiang rose significantly in April. Meanwhile, Hong Kong, Liaoning, Shanghai and Xinjiang showed varying degrees of outbreaks in July and August. Does this seem to remind us that COVID-19 is far from the end?   
+  
+Let's look at Table 3, and you will find some new insights.    
 
 ```{r bar, fig.cap="The bar charts for confirmed cases, deaths and recovered cases of COVID-19 in China from January to August"}
 # sum for each month 
@@ -218,7 +223,6 @@ sticky_style <- list(position = "sticky", left = 0, background = "#fff", zIndex 
 
 ```
 
-
 ```{r summary, fig.cap="Summary statistic of Covid-19 cases by each province in China"}
 pro_bar_rate <- reactable(covid19_pro_rate,
                      pagination = TRUE,
@@ -273,4 +277,15 @@ htmltools::div(div(class = "title",
                pro_bar_rate)
 ```
 
+Table 3 tells us that the lowest three recovered rates are in Hong Kong, Xinjiang and Shanghai, which are consistent with their outbreaks in July and August, and the number of new confirmed cases is too high to catch the recovery cycle. Among them, the low recovered rate in Xinjiang is also related to the lack of medical resources. Also, Hubei has the highest mortality rate due to the shortage of medical resources during the outbreak, which is the epicentre of the epidemic[@zhang2020wuhan].  As for the current active case rate of each province, it is the proportion of all the active cases in China, and the top three are Hong Kong with 9.12%, Xinjiang with 8.2% and Shanghai with 6.82%.   
+From the above table, we find that more than 47% of the provinces have no active cases, more than 44% of the provinces have less than 6% of the active cases. In terms of data, Hong Kong, Shanghai and Xinjiang at highest risk of COVID-19, but when you focus on the whole population in China, you will find that the proportion of active cases infinite close to zero, as shown in the last column in Table 3.    
 
+## Conclusion
+From the above analysis, we can infer that COVID-19 is under control in China, we do not need to panic about that, but it is recommended to wear a mask when you in a crowd and wash your hands frequently, especially you live in Hong Kong, Xinjiang and Shanghai.     
+   
+Hopefully, this blog post can provide you with useful information.    
+Stay safe and keep healthy.  
+
+# Acknowledgments {.appendix}
+
+Thanks for all contributors for the R packages used in this blog. [@tidyverse] [@DT] [@formattable] [@lubridate] [@knitr] [@dplyr] [@sparkline] [@reactable] [@html] [@kable]
