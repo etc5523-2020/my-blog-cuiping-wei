@@ -50,6 +50,42 @@ library(gganimate)
 
 ```
 
+
+```{r}
+covid_history <- load_nCov2019(lang='en')
+cn_dat <- covid_history []
+```
+
+```{r}
+hubei_his_dat<- cn_dat %>% 
+  filter(province == "Hubei",
+         time >= "2019-12-20" & time <= "2020-04-30") %>% 
+  group_by(time) %>% 
+  summarise(cum_confirm = sum(cum_confirm),
+            cum_dead = sum(cum_dead),
+            cum_heal = sum(cum_heal))
+  
+h_line <- hubei_his_dat %>% 
+  ggplot(aes(x = as.Date(time, "%m/%d/%Y"))) +
+    geom_line(aes(y = cum_confirm, color = "Confirmed")) +
+    geom_line(aes(y = cum_dead, color = "Deaths")) +
+    geom_line(aes(y = cum_heal, color = "Recovered")) +
+    transition_reveal(as.Date(time, "%m/%d/%Y")) +
+    scale_color_manual( "", 
+      breaks = c("Confirmed", "Deaths", "Recovered"),
+      values = c("black", "red", "steelblue")) +
+    labs(title = "COVID-19 in Hubei, China",
+         subtitle = "Data from R packages nCov2019",
+         x = "Time",
+         y = "Count") +
+    scale_x_date(date_breaks = "2 week",
+                 date_labels = "%b %d") +
+    theme_light()
+
+h_line
+```
+
+
 ```{r}
 covid19_tot <- get_nCov2019(lang='en')
 hubei <- covid19_tot['Hubei', ] %>%
@@ -93,51 +129,29 @@ theme_p <- theme(axis.title.x=element_blank(),
 ```
 
 ```{r}
-
 ggplot(hubei_map_data) +
   geom_sf(aes(fill=confirm, geometry=geometry)) +
   geom_sf_text(aes(label=name, geometry=geometry), color='blue') +
-  scale_fill_brewer(palette="Blues") +
-  theme(plot.title=element_text(hjust=0.5))  +
+  scale_fill_brewer(palette="Blues") +  theme(plot.title=element_text(hjust=0.5))  +
   guides(fill=guide_legend(reverse=TRUE))+
   theme_p
   
 ```
 
-```{r}
-covid_history <- load_nCov2019(lang='en')
-cn_dat <- covid_history []
+```{r lockdown-data}
+#scrape lockdown and population information
+url_lockdown <- "https://zh.m.wikipedia.org/zh-cn/2019%E5%86%A0%E7%8B%80%E7%97%85%E6%AF%92%E7%97%85%E4%B8%AD%E5%9C%8B%E5%A4%A7%E9%99%B8%E7%96%AB%E5%8D%80%E5%B0%81%E9%8E%96%E6%8E%AA%E6%96%BD"
+
+html_lockdwon <- read_html(url_lockdown)
+tbl_lockdown <- html_nodes(html_lockdwon, "table")
+lockdown_info <- html_table(tbl_lockdown[[4]], fill = TRUE) 
+lockdown_info <-lockdown_info[-c(1:2, 20:21),] 
+
+#rename the columns
+names(lockdown_info) = c("city", "province", "start", "end", "level", "population(million)", "confirmed", "death", "recover")
+lockdown_info$city <- trans_city(lockdown_info$city)
+
 ```
-
-```{r}
-hubei_his_dat<- cn_dat %>% 
-  filter(province == "Hubei",
-         time >= "2019-12-20" & time <= "2020-04-30") %>% 
-  group_by(time) %>% 
-  summarise(cum_confirm = sum(cum_confirm),
-            cum_dead = sum(cum_dead),
-            cum_heal = sum(cum_heal))
-  
-h_line <- hubei_his_dat %>% 
-  ggplot(aes(x = as.Date(time, "%m/%d/%Y"))) +
-    geom_line(aes(y = cum_confirm, color = "Confirmed")) +
-    geom_line(aes(y = cum_dead, color = "Deaths")) +
-    geom_line(aes(y = cum_heal, color = "Recovered")) +
-    transition_reveal(as.Date(time, "%m/%d/%Y")) +
-    scale_color_manual( "", 
-      breaks = c("Confirmed", "Deaths", "Recovered"),
-      values = c("black", "red", "steelblue")) +
-    labs(title = "COVID-19 in Hubei, China",
-         subtitle = "Data from R packages **nCov2019**",
-         x = "Time",
-         y = "Count") +
-    scale_x_date(date_breaks = "2 week",
-                 date_labels = "%b %d") +
-    theme_light()
-
-h_line
-```
-
 
 
 ```{r gdp_data,eval=FALSE}
@@ -157,16 +171,16 @@ gdp_info$city <- trans_city(gdp_info$city)
 
 ```{r}
 #scrape population information
-url_pop <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E7%9C%81%E5%90%84%E5%B8%82%E5%B7%9E%E4%BA%BA%E5%8F%A3%E5%88%97%E8%A1%A8"
-
-html_pop <- read_html(url_pop)
-tbl_pop <- html_nodes(html_pop, "table")
-pop_info <- html_table(tbl_pop[[1]], fill = TRUE) %>% select(1:2)
-pop_info <- pop_info[-c(1:2),]
-
-#rename the columns
-names(pop_info) = c("city", "population")
-pop_info$city <- trans_city(pop_info$city)
+# url_pop <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E7%9C%81%E5%90%84%E5%B8%82%E5%B7%9E%E4%BA%BA%E5%8F%A3%E5%88%97%E8%A1%A8"
+# 
+# html_pop <- read_html(url_pop)
+# tbl_pop <- html_nodes(html_pop, "table")
+# pop_info <- html_table(tbl_pop[[1]], fill = TRUE) %>% select(1:2)
+# pop_info <- pop_info[-c(1:2),]
+# 
+# #rename the columns
+# names(pop_info) = c("city", "population")
+# pop_info$city <- trans_city(pop_info$city)
 ```
 
 
@@ -176,20 +190,32 @@ hubei_dat<- hubei %>%
 ```
 
 ```{r}
-hubei_info <- gdp_info %>% 
-  left_join(pop_info, by = "city") %>% 
-  left_join(hubei_dat, by = c("city" = "name")) %>% 
+hubei_info <- lockdown_info %>% 
+  full_join(gdp_info, by = "city") %>% 
+  full_join(hubei_dat, by = c("city" = "name")) %>% 
+  select(-2,-5,-c(7:9)) %>% 
   mutate(dead_rate = round(dead / confirm,3),
-         population = as.numeric(population)) %>% 
-  filter(city != "Wuhan") %>% 
-  arrange(-dead) %>% 
-  head(10) %>% 
-  mutate(log_gdp = log(GDP))
+         population = as.numeric(gsub(",","", population))/10000,
+         start = substring(start, 1,10),
+         end = substring(end, 1,10)) %>% 
+  #filter(city != "Wuhan") %>% 
+  arrange(-dead) 
+  # head(10) 
+  # mutate(log_gdp = log(GDP))
+
+
+# lockdown table
+
+hubei_info %>% 
+  select(c(1:3, 6:8)) %>% 
+  kable() %>% 
+  kable_styling(full_width = F)
 ```
 
 
 ```{r}
-ggplot(hubei_info, aes(x=population, y=GDP)) +
+ggplot(data = (hubei_info %>% filter(city != "Wuhan") %>% head(10)), 
+       aes(x=population, y=GDP)) +
   geom_point(aes(size=dead, color=city), show.legend = FALSE) +
   geom_text(aes(label=paste(city)), hjust=-.2, size=3,vjust = -.5) +
   geom_abline(intercept=0, slope=6.5, color='red', size=.9, alpha=.5, linetype="dotted") +
