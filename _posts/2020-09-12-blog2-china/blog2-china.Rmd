@@ -5,7 +5,7 @@ description: |
 author:
   - name: Cuiping Wei
     url: 
-date: August 30, 2020
+date: September 16, 2020
 categories: 
   - COVID-19
 output:
@@ -25,29 +25,115 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 
 
 ```{r load-libraries}
 #remotes::install_github("GuangchuangYu/nCov2019")
-#remotes::install_github("GuangchuangYu/chinamap")
 library(tidyverse)
 library(knitr)
 library(dplyr)
 library(kableExtra)
 library(plotly)
 library(nCov2019)
-library(leafletCN)
-library(chinamap)
-library(rgdal)
-library(maptools)
-library(mapproj)
 library(ggsn)
 library(xml2)
 library(rvest)
 library(RColorBrewer)
 library(gganimate)
+select <- dplyr::select
 ```
+
+
+## Data acquisition
+
+### COVID-19 data
 
 ```{r covid-history}
 # read covid-19 history data
 covid_history <- load_nCov2019(lang='en')
 cn_dat <- covid_history []
+```
+
+```{r cumulative-data}
+# read the cumulative data for Huibei province
+covid19_tot <- get_nCov2019(lang='en')
+hubei <- covid19_tot['Hubei', ] %>%
+  filter(name != is.na(name) )
+```
+
+The incidence data is obtained from R package `nCov2019`[@ncov] provided by Guangchuang Yu, which contains historical and real-time daily COVID-19 data for China. In this blog, I will focus on Hubei province data, which contains `r nrow(cn_dat)` observations from 2019-12-01 to present.   
+
+### City map data
+China city map data is provided by Jinxin Zhang[@citymap], which contains all cities map data in China. Only Hubei map data will be applied in this blog.    
+```{r hubei-map-data}
+#load citymap  
+load("data/CityMapDatas.Rda")  
+```
+
+### Wikipedia data
+
+Lockdown data and GDP data for Hubei province were scraped from Wikipedia. 
+Lockdown data[@lockdown] contains `r nrow(lockdown_info)` observations and `r ncol(lockdown_info)` variables for all cities in Hubei on 2020. In this blog, I mainly used city, population, start date and end date of lockdown.  
+GDP data[@gdp] include 2018 GDP for all cities in Hubei.  
+
+```{r lockdown-data}
+#scrape lockdown and population information
+url_lockdown <- "https://zh.m.wikipedia.org/zh-cn/2019%E5%86%A0%E7%8B%80%E7%97%85%E6%AF%92%E7%97%85%E4%B8%AD%E5%9C%8B%E5%A4%A7%E9%99%B8%E7%96%AB%E5%8D%80%E5%B0%81%E9%8E%96%E6%8E%AA%E6%96%BD"
+
+html_lockdwon <- read_html(url_lockdown)
+tbl_lockdown <- html_nodes(html_lockdwon, "table")
+lockdown_info <- html_table(tbl_lockdown[[4]], fill = TRUE) 
+lockdown_info <-lockdown_info[-c(1:2, 20:21),] 
+
+#rename the columns
+names(lockdown_info) = c("city", "province", "start", "end", "level", 
+                         "population", "confirmed", "death", "recover")
+lockdown_info$city <- trans_city(lockdown_info$city)
+
+```
+
+```{r gdp_data}
+#scrape gdp information
+url_gdp <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E5%90%84%E5%B8%82%E5%B7%9E%E5%9C%B0%E5%8C%BA%E7%94%9F%E4%BA%A7%E6%80%BB%E5%80%BC%E5%88%97%E8%A1%A8"
+
+html_gdp <- read_html(url_gdp)
+tbl_gdp <- html_nodes(html_gdp, "table")
+gdp_info <- html_table(tbl_gdp[[1]], fill = TRUE) %>% select(1:2)
+
+#rename the columns
+names(gdp_info) = c("city", "GDP")
+gdp_info$city <- trans_city(gdp_info$city)
+
+```
+
+
+## Story 1
+
+```{r hubei_info}
+# select neccessary variables
+hubei_dat<- hubei %>% 
+  select(name, confirm, dead, heal)
+
+# join data
+hubei_info <- lockdown_info %>% 
+  full_join(gdp_info, by = "city") %>% 
+  full_join(hubei_dat, by = c("city" = "name")) %>% 
+  select(-2,-5,-c(7:9)) %>% 
+  mutate(dead_rate = round(dead / confirm,3),
+         population = as.numeric(gsub(",","", population))/1000000,
+         start = substring(start, 1,10),
+         end = substring(end, 1,10),
+         # modified the real restrict start date
+         start = case_when(city == "Qianjiang" ~ "2020-01-17",
+                                  TRUE ~ start),
+         log_gdp = log(GDP)) %>% 
+  arrange(-dead) 
+
+# lockdown table
+hubei_info %>% 
+  select(city, "start date" = start, "end date" = end, "confirmed cases" = confirm) %>% 
+  kable(caption = "Lockdown times for each city in Hubei province") %>% 
+  kable_styling(bootstrap_options = 
+                  c("striped", "condensed"), 
+                  full_width = F, 
+                  position = "center") %>% 
+  scroll_box(width = "500px", height = "300px")
 ```
 
 ```{r dynamic-plot,fig.cap='The trend for the COVID-19 in Hubei province from 2020-01-01 to 2020-04-15. Black line represents confirmed cases, blue line represents recovered cases, and the red line represents deaths cases.}
@@ -81,17 +167,7 @@ h_line
 ```
 
 
-```{r cumulative-data}
-# read the cumulative data for Huibei province
-covid19_tot <- get_nCov2019(lang='en')
-hubei <- covid19_tot['Hubei', ] %>%
-  filter(name != is.na(name) )
-```
-
-```{r read-citymap}
-#load citymap  
-load("data/CityMapDatas.Rda")  
-
+```{r citymap}
 # select Hubei
 map_hubei<-map %>% 
   filter(NAME_1 == 'Hubei') %>% 
@@ -138,67 +214,9 @@ ggplot(hubei_map_data) +
   
 ```
 
-```{r lockdown-data}
-#scrape lockdown and population information
-url_lockdown <- "https://zh.m.wikipedia.org/zh-cn/2019%E5%86%A0%E7%8B%80%E7%97%85%E6%AF%92%E7%97%85%E4%B8%AD%E5%9C%8B%E5%A4%A7%E9%99%B8%E7%96%AB%E5%8D%80%E5%B0%81%E9%8E%96%E6%8E%AA%E6%96%BD"
-
-html_lockdwon <- read_html(url_lockdown)
-tbl_lockdown <- html_nodes(html_lockdwon, "table")
-lockdown_info <- html_table(tbl_lockdown[[4]], fill = TRUE) 
-lockdown_info <-lockdown_info[-c(1:2, 20:21),] 
-
-#rename the columns
-names(lockdown_info) = c("city", "province", "start", "end", "level", "population", "confirmed", "death", "recover")
-lockdown_info$city <- trans_city(lockdown_info$city)
-
-```
 
 
-```{r gdp_data}
-#scrape gdp information
-url_gdp <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E5%90%84%E5%B8%82%E5%B7%9E%E5%9C%B0%E5%8C%BA%E7%94%9F%E4%BA%A7%E6%80%BB%E5%80%BC%E5%88%97%E8%A1%A8"
-
-html_gdp <- read_html(url_gdp)
-tbl_gdp <- html_nodes(html_gdp, "table")
-gdp_info <- html_table(tbl_gdp[[1]], fill = TRUE) %>% select(1:2)
-
-#rename the columns
-names(gdp_info) = c("city", "GDP")
-gdp_info$city <- trans_city(gdp_info$city)
-
-```
-
-```{r hubei_info}
-# select neccessary variables
-hubei_dat<- hubei %>% 
-  select(name, confirm, dead, heal)
-
-# join data
-hubei_info <- lockdown_info %>% 
-  full_join(gdp_info, by = "city") %>% 
-  full_join(hubei_dat, by = c("city" = "name")) %>% 
-  select(-2,-5,-c(7:9)) %>% 
-  mutate(dead_rate = round(dead / confirm,3),
-         population = as.numeric(gsub(",","", population))/1000000,
-         start = substring(start, 1,10),
-         end = substring(end, 1,10),
-         # modified the real restrict start date
-         start = case_when(city == "Qianjiang" ~ "2020-01-17",
-                                  TRUE ~ start),
-         log_gdp = log(GDP)) %>% 
-  arrange(-dead) 
-
-# lockdown table
-hubei_info %>% 
-  select(city, "start date" = start, "end date" = end, "confirmed cases" = confirm) %>% 
-  kable(caption = "Lockdown times for each city in Hubei province") %>% 
-  kable_styling(bootstrap_options = 
-                  c("striped", "condensed"), 
-                  full_width = F, 
-                  position = "center") %>% 
-  scroll_box(width = "500px", height = "300px")
-```
-
+## Story 2
 
 ```{r covid, fig.cap= "COVID-19 cases from World, Updated on September 16, 2020, 04:06 GMT. Soruce from Worldometers."}
 knitr::include_graphics("images/Coronavirus deaths.png")
