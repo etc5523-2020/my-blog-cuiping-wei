@@ -20,7 +20,7 @@ draft: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 'H', fig.align ='center')
 ```
 
 ```{r load-libraries}
@@ -44,36 +44,31 @@ library(RColorBrewer)
 library(gganimate)
 ```
 
-```{r}
-#remotes::install_github("GuangchuangYu/nCov2019")
-#remotes::install_github("GuangchuangYu/chinamap")
-
-```
-
-
-```{r}
+```{r covid-history}
+# read covid-19 history data
 covid_history <- load_nCov2019(lang='en')
 cn_dat <- covid_history []
 ```
 
-```{r}
+```{r dynamic-plot,fig.cap='The trend for the COVID-19 in Hubei province from 2020-01-01 to 2020-04-15. Black line represents confirmed cases, blue line represents recovered cases, and the red line represents deaths cases.}
+# only select Hubei province from 2020-01-01 to 2020-04-15
 hubei_his_dat<- cn_dat %>% 
   filter(province == "Hubei",
-         time >= "2019-12-20" & time <= "2020-04-30") %>% 
+         time >= "2020-01-01" & time <= "2020-04-15") %>% 
   group_by(time) %>% 
   summarise(cum_confirm = sum(cum_confirm),
             cum_dead = sum(cum_dead),
             cum_heal = sum(cum_heal))
-  
+
+# make dynamic plot
 h_line <- hubei_his_dat %>% 
   ggplot(aes(x = as.Date(time, "%m/%d/%Y"))) +
     geom_line(aes(y = cum_confirm, color = "Confirmed")) +
     geom_line(aes(y = cum_dead, color = "Deaths")) +
     geom_line(aes(y = cum_heal, color = "Recovered")) +
     transition_reveal(as.Date(time, "%m/%d/%Y")) +
-    scale_color_manual( "", 
-      breaks = c("Confirmed", "Deaths", "Recovered"),
-      values = c("black", "red", "steelblue")) +
+    scale_color_manual(breaks = c("Confirmed", "Deaths", "Recovered"),
+                       values = c("black", "red", "steelblue")) +
     labs(title = "COVID-19 in Hubei, China",
          subtitle = "Data from R packages nCov2019",
          x = "Time",
@@ -86,14 +81,18 @@ h_line
 ```
 
 
-```{r}
+```{r cumulative-data}
+# read the cumulative data for Huibei province
 covid19_tot <- get_nCov2019(lang='en')
 hubei <- covid19_tot['Hubei', ] %>%
   filter(name != is.na(name) )
 ```
 
-```{r}
+```{r read-citymap}
+#load citymap  
 load("data/CityMapDatas.Rda")  
+
+# select Hubei
 map_hubei<-map %>% 
   filter(NAME_1 == 'Hubei') %>% 
   mutate(name = recode(NAME_2,
@@ -103,37 +102,38 @@ map_hubei<-map %>%
 ```
 
 
-```{r}
+```{r city-map-data}
 hubei_map_data <- data.frame(hubei$name,
-                 cut(hubei$confirm, c(0,10,100,500,1000,10000, 60000),
-                     labels=c("1~9","10~99","100~500","500~999","1000~9999","≥10000"),
+                 cut(hubei$confirm, c(0,100,200,500,1000,10000, 60000),
+                     labels=c("10~99", "100~199","200~500","500~999","1000~9999","≥10000"),
                      include.lowest=TRUE, right=FALSE))  
-names(hubei_map_data) <- c("name", "confirm")
-```
+names(hubei_map_data) <- c("name", "confirmed")
 
-```{r}
 hubei_map_data <- map_hubei %>%
   left_join(hubei_map_data, by="name") 
 ```
 
 
-```{r}
+```{r theme}
+# combine themes
 theme_p <- theme(axis.title.x=element_blank(),
                   axis.title.y=element_blank(),
                   axis.ticks=element_blank(),
                   axis.text.x = element_blank(),
                   axis.text.y = element_blank(),
-                  #plot.title = element_text(face = "bold"),
+                  plot.title = element_text(face = "bold", hjust=0.5),
                   plot.background = element_rect(fill="white"),
                   panel.background = element_rect(fill="white"))
 ```
 
-```{r}
+```{r fig.cap="Map for the cumulative confirmed cases in all cities in Hubei province, divided into six level. The darker the color, the more confirmed cases.}
 ggplot(hubei_map_data) +
-  geom_sf(aes(fill=confirm, geometry=geometry)) +
-  geom_sf_text(aes(label=name, geometry=geometry), color='blue') +
-  scale_fill_brewer(palette="Blues") +  theme(plot.title=element_text(hjust=0.5))  +
+  geom_sf(aes(fill=confirmed, geometry=geometry), color = "white") +
+  geom_sf_text(aes(label=name, geometry=geometry), 
+               color="black") +
+  scale_fill_brewer(palette="Blues") +  
   guides(fill=guide_legend(reverse=TRUE))+
+  ggtitle("The cumulative cases for COVID-19 in Hubei")+
   theme_p
   
 ```
@@ -148,13 +148,13 @@ lockdown_info <- html_table(tbl_lockdown[[4]], fill = TRUE)
 lockdown_info <-lockdown_info[-c(1:2, 20:21),] 
 
 #rename the columns
-names(lockdown_info) = c("city", "province", "start", "end", "level", "population(million)", "confirmed", "death", "recover")
+names(lockdown_info) = c("city", "province", "start", "end", "level", "population", "confirmed", "death", "recover")
 lockdown_info$city <- trans_city(lockdown_info$city)
 
 ```
 
 
-```{r gdp_data,eval=FALSE}
+```{r gdp_data}
 #scrape gdp information
 url_gdp <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E5%90%84%E5%B8%82%E5%B7%9E%E5%9C%B0%E5%8C%BA%E7%94%9F%E4%BA%A7%E6%80%BB%E5%80%BC%E5%88%97%E8%A1%A8"
 
@@ -166,68 +166,70 @@ gdp_info <- html_table(tbl_gdp[[1]], fill = TRUE) %>% select(1:2)
 names(gdp_info) = c("city", "GDP")
 gdp_info$city <- trans_city(gdp_info$city)
 
-
 ```
 
-```{r}
-#scrape population information
-# url_pop <- "https://zh.wikipedia.org/wiki/%E6%B9%96%E5%8C%97%E7%9C%81%E5%90%84%E5%B8%82%E5%B7%9E%E4%BA%BA%E5%8F%A3%E5%88%97%E8%A1%A8"
-# 
-# html_pop <- read_html(url_pop)
-# tbl_pop <- html_nodes(html_pop, "table")
-# pop_info <- html_table(tbl_pop[[1]], fill = TRUE) %>% select(1:2)
-# pop_info <- pop_info[-c(1:2),]
-# 
-# #rename the columns
-# names(pop_info) = c("city", "population")
-# pop_info$city <- trans_city(pop_info$city)
-```
-
-
-```{r}
+```{r hubei_info}
+# select neccessary variables
 hubei_dat<- hubei %>% 
   select(name, confirm, dead, heal)
-```
 
-```{r}
+# join data
 hubei_info <- lockdown_info %>% 
   full_join(gdp_info, by = "city") %>% 
   full_join(hubei_dat, by = c("city" = "name")) %>% 
   select(-2,-5,-c(7:9)) %>% 
   mutate(dead_rate = round(dead / confirm,3),
-         population = as.numeric(gsub(",","", population))/10000,
+         population = as.numeric(gsub(",","", population))/1000000,
          start = substring(start, 1,10),
-         end = substring(end, 1,10)) %>% 
-  #filter(city != "Wuhan") %>% 
+         end = substring(end, 1,10),
+         # modified the real restrict start date
+         start = case_when(city == "Qianjiang" ~ "2020-01-17",
+                                  TRUE ~ start),
+         log_gdp = log(GDP)) %>% 
   arrange(-dead) 
-  # head(10) 
-  # mutate(log_gdp = log(GDP))
-
 
 # lockdown table
-
 hubei_info %>% 
-  select(c(1:3, 6:8)) %>% 
-  kable() %>% 
-  kable_styling(full_width = F)
+  select(city, "start date" = start, "end date" = end, "confirmed cases" = confirm) %>% 
+  kable(caption = "Lockdown times for each city in Hubei province") %>% 
+  kable_styling(bootstrap_options = 
+                  c("striped", "condensed"), 
+                  full_width = F, 
+                  position = "center") %>% 
+  scroll_box(width = "500px", height = "300px")
 ```
 
 
-```{r}
-ggplot(data = (hubei_info %>% filter(city != "Wuhan") %>% head(10)), 
-       aes(x=population, y=GDP)) +
-  geom_point(aes(size=dead, color=city), show.legend = FALSE) +
-  geom_text(aes(label=paste(city)), hjust=-.2, size=3,vjust = -.5) +
-  geom_abline(intercept=0, slope=6.5, color='red', size=.9, alpha=.5, linetype="dotted") +
-  xlim(100, 800) +
+```{r covid, fig.cap= "COVID-19 cases from World, Updated on September 16, 2020, 04:06 GMT. Soruce from Worldometers."}
+knitr::include_graphics("images/Coronavirus deaths.png")
+```
+
+```{r gdp-dead}
+# select top 10 cities in deaths except for Wuhan
+h_10 <- hubei_info %>% filter(city != "Wuhan") %>% head(10) 
+
+# make plot
+p<-ggplot() +
+  geom_point(data = h_10,aes(population, GDP,size=dead_rate, color=city), show.legend = FALSE) +
+  geom_text(data= h_10,aes(population, GDP,label=paste(city)), hjust=-0.2, size=3,vjust = -0.5, show.legend = FALSE) +
+  geom_smooth(data=h_10, aes(population,GDP), method = "lm", se = FALSE, linetype = "dotted", color = "red", size=0.5, alpha=0.3)+
+  theme(legend.position="none")+
   theme_classic() +
-  scale_size_continuous(range=c(2,11)) +
-  annotate(geom = "text", x=530, y=3500, label="National gdp", size=3) +
-  annotate(geom = "text", x=600, y=1200, label="< National gdp",  size=4) +
-  annotate(geom = "text", x=250, y=3000, label="> National gdp", alpha=.8, size=4)
+  scale_size_continuous(range=c(2,11))+
+  xlim(c(1,7))+
+  xlab("Population(Million)")+
+  ylab("GDP(Billion)")+
+  annotate(geom = "text", x=5.7, y=2920, label="Hubei province  average GDP", alpha=0.8,size=3) 
+
+hide_legend(p) %>% config(displayModeBar = F)
+
 ```
 
-```{r}
-GGally::ggpairs(hubei_info, c(2,3,5))
+```{r correlation}
+p1<-GGally::ggpairs(data = (hubei_info %>% filter(city != "Wuhan") %>% head(10)), c(9,10))+
+  theme_light()
+
+ggplotly(p1)%>% config(displayModeBar = F)
 ```
+
 
