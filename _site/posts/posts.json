@@ -1,5 +1,23 @@
 [
   {
+    "path": "posts/2020-09-12-blog2-china/",
+    "title": "Hubei province - scarred but still stay strong!",
+    "description": "Hubei province, as the the centre of China's coronavirus outbreak, what happened there?",
+    "author": [
+      {
+        "name": "Cuiping Wei",
+        "url": {}
+      }
+    ],
+    "date": "2020-09-16",
+    "categories": [
+      "COVID-19"
+    ],
+    "preview": "posts/2020-09-12-blog2-china/images/hubei-recover.jpeg",
+    "last_modified": "2020-09-17T21:22:27+10:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2020-08-29-blog1-china-covid-19/",
     "title": "Can we go out now?",
     "description": "With the COVID-19 outbreak worldwide, what is the current situation in China? Do we need to panic? This post briefly tells the story behind the numbers for COVID-19 in China through tables.",
