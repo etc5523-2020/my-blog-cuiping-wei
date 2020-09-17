@@ -45,9 +45,11 @@ select <- dplyr::select
 "Come on, Wuhan!" Source from Xiaotao Chen.
 </center>
 
+<br>
+
 "My city was sick, but I still love him."    
 I still remember when I read this sentence in January, tears welled up in my eyes. At that time, Wuhan experienced an outbreak of COVID-19, and then COVID-19 spread started throughout other provinces in China. The Spring Festival of 2020 was not be celebrated in a festive atmosphere, but with the fear of COVID-19.   
-Today, we have come out of the shadow of COVID-19, and our faces are smiling again. And I want to talk about some stories in Hubei province, what happened there?   
+Today, we have came out of the shadow of COVID-19, and our faces are smiling again. And I want to talk about some stories in Hubei province, what happened there?   
 
 
 ## Data acquisition
