@@ -1,0 +1,25 @@
+---
+title: "blog3-self-review"
+description: |
+  A short description of the post.
+date: 10-10-2020
+author:
+  - name: Cuiping Wei
+    url: 
+date: September 16, 2020
+categories: 
+  - Shiny app
+output:
+  distill::distill_article:
+    self_contained: false
+bibliography: references.bib
+#preview: 
+resources:
+  exclude:
+    data/
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 'H', fig.align ='center')
+```
