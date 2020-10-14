@@ -1,5 +1,25 @@
 [
   {
+    "path": "posts/2020-10-10-blog3-self-review/",
+    "title": "Self-reflection for my first shiny app",
+    "description": "Recently I finished my first shiny app of my life, and I have reviewed and reflected on my Shiny app in this blog.",
+    "author": [
+      {
+        "name": "Cuiping Wei",
+        "url": {}
+      }
+    ],
+    "date": "2020-10-10",
+    "categories": [
+      "Shiny app"
+    ],
+    "preview": "posts/2020-10-10-blog3-self-review/images/Picture 2png.png",
+    "last_modified": "2020-10-14T23:44:06+11:00",
+    "input_file": {},
+    "preview_width": 832,
+    "preview_height": 470
+  },
+  {
     "path": "posts/2020-09-12-blog2-china/",
     "title": "Hubei province - scarred but still stay strong!",
     "description": "Hubei province, as the centre of China's coronavirus outbreak, what happened there?",

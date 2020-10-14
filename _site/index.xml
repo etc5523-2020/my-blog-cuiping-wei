@@ -7,7 +7,17 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 16 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Self-reflection for my first shiny app</title>
+      <dc:creator>Cuiping Wei</dc:creator>
+      <link>https://awsome-number-story.netlify.app/posts/2020-10-10-blog3-self-review</link>
+      <description>Recently I finished my first shiny app of my life, and I have reviewed and reflected on my Shiny app in this blog.</description>
+      <category>Shiny app</category>
+      <guid>https://awsome-number-story.netlify.app/posts/2020-10-10-blog3-self-review</guid>
+      <pubDate>Sat, 10 Oct 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://awsome-number-story.netlify.app/posts/2020-10-10-blog3-self-review/images/Picture 2png.png" medium="image" type="image/png" width="832" height="470"/>
+    </item>
     <item>
       <title>Hubei province - scarred but still stay strong!</title>
       <dc:creator>Cuiping Wei</dc:creator>
