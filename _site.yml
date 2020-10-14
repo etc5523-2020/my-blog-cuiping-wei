@@ -21,6 +21,7 @@ rss:
   categories:
     - R
     - COVID-19
+    - Shiny app
 collections:
   posts:
     subscribe: _subscribe.html
