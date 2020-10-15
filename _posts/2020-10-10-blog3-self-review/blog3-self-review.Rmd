@@ -1,10 +1,10 @@
 ---
 title: "Self-reflection for my first shiny app"
 description: |
-  Recently I finished my first shiny app of my life, and I have reviewed and reflected on my Shiny app in this blog.
+  Recently, I finished my first shiny app of my life, and I have reviewed and reflected on my Shiny app in this blog.
 author:
   - name: Cuiping Wei
-    url: 
+    url: https://awsome-number-story.netlify.app/posts/2020-10-10-blog3-self-review/
 date: October 10, 2020
 categories: 
   - Shiny app
