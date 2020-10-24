@@ -1,0 +1,28 @@
+---
+title: "r-package review"
+description: |
+  A short description of the post.
+author:
+  - name: Cuiping Wei
+    url: 
+date: October 24, 2020
+categories: 
+  - Shiny app
+output:
+  distill::distill_article:
+    self_contained: false
+bibliography: references.bib
+preview: images/
+resources:
+  exclude:
+    data/
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+
