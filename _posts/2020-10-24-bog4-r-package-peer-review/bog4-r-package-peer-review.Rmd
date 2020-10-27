@@ -1,22 +1,22 @@
 ---
-title: "r-package review"
+title: "Peer review for covid19BFI"
 description: |
-  A short description of the post.
+  Did you know that there are a lot of new R packages created every year? Thanks to the people who changed the world with code. In this blog, I want to explore and learn about the covid19BFI package created by Samuel Lyubic.
 author:
   - name: Cuiping Wei
     url: 
-date: October 24, 2020
+date: October 25, 2020
 categories: 
-  - Shiny app
+  - R
 output:
   distill::distill_article:
     self_contained: false
 bibliography: references.bib
-preview: images/
+preview: images/cover.png
 resources:
   exclude:
     data/
-draft: true
+draft: false
 ---
 
 ```{r setup, include=FALSE}
@@ -24,5 +24,162 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
+## Overall
+
+The `covid19BFI`[@sam] package created by Samuel Lyubic is an excellent work, and I am glad to have the opportunity to review and learn from his work in this blog.     
+
+The `covid19BFI` package provides an interactive and insightful built-in Shiny app for the comparison in COVID-19 impact between Ireland and the United Kingdom. This package contain three data sets and five functions.   
+
+Three data sets:  
+- `covid_data_uk_irl`  
+- `mobility_major_cities`  
+- `raw_covid_data_uk_irl`  
+
+Five functions:  
+- `color_check()`  
+- `data_wrangle()`  
+- `dateInput_range()`  
+- `dt_styler()`  
+- `launch_app()`  
+
+
+Interestingly, not all functions are directed to use in Shiny UI and Server sections, in which `color_check()` is an additional function nested in `dt_styler ()`.  
+
+Overall, the initial exploration of this package brings me some space for reveries.   
+
+
+## Explore  `covid19BFI`
+
+### What did I think this package would do? 
+
+`readme` in Github page provides the big picture of the  `covid19BFI` package and describes the built-in Shiny app's overview. Also, `covid_data_uk_irl,` `launch_app()` and `dt_styler ()` is described in detail.  The author informed us that we could view more information on other functions or tools on the Vignette page, but the link didn't show us.  So before I started installing and downloading this package, I thought it would give me some insights into the impact of COVID-19 between Ireland and the UK and the differences in how the two countries deal with it. But I don't know what other functions and how to use them that this package contains.  
+
+Therefore, I installed `covid19BFI` and used the `pkgdown::build_site()` function to build the site for this package and further explore it. There is a very detailed guide for using the built-in Shiny app on the Vignette page, and the Reference page provided me with comprehensive documents for other functions in this package.   
+
+At this point, I think the package structure is complete. The author used `data_wrangle()` to simplify the repetitive data cleaning process, used `dateInput_range()` to create date Input module for Shiny App, used `dt_styler ()` to generate formatted tables, and used `launch_app` to call the built-in Shiny app. All these functions are to simplify the original Shiny app.  
+
+
+### Did it do it?
+
+- **The datasets**
+
+All the built-in datasets can be called by `covid19BFI` without any errors.  
+
+- **The functions**
+
+All functions work normally in the built-in Shiny app as expected.  
+
+
+## Review `covid19BFI`
+
+### Are the improvements that could be made to the code?
+
+- **data_wrangle()**  
+
+The `data_wrangle()` function can use `...` instead of fixed variables for `group_by`, `summarise` and `rename`, instead of being limited to specific variables. Also, add two tunable variables to replace the fixed variables for the `pivot_wider` section, making the function use more freely.  
+
+*Original code*
+
+```r
+data_wrangle <- function(data) {
+  data %>%
+    group_by(.data$month, .data$month_label, .data$iso3, .data$measures_group) %>%
+    summarise(proportion = sum(.data$proportion)) %>%
+    pivot_wider(names_from = "measures_group",
+                values_from = "proportion") %>%
+    mutate_all(~replace(., is.na(.), 0)) %>%
+    rename(Month = month, 
+           Country = iso3,
+           `Month Label` = month_label)  
+}
+```
+
+*Some imrovements*
+
+```r
+data_wrangle <- function(.data, ..., var1, var2) {
+  data %>%
+    group_by(...) %>%
+    summarise(... = sum(...)) %>%
+    pivot_wider(names_from = var1,
+                values_from = var2) %>%
+    mutate_all(~replace(., is.na(.), 0)) %>%
+    rename(...)  
+}
+```
+
+
+- **dateInput_range()**  
+
+CheckboxGroupInput module can be added to `dateInput_range()` function and merged them into a new function. Maybe we can call it `input_module()`. And we can use the 'if else' statement to combine two different modules in the new function, eventually called in the built-in Shiny App. This can further simplify the UI-side of the Shiny App.   
+
+
+### Are there improvements that could be made to the shiny app inside the package?
+
+- **Simplify the codes**
+
+1. There are three selectInput module codes in the built-in Shiny app. It will be better to write a function to reduce these repetitive modules, simplifying the codes in the Shiny app.  
+
+2. On the server-side, the 'reactive' module appears five times. It will be better to write a function to reduce these repetitive codes, simplifying the codes in the Shiny app.
+
+
+- **Minor modifications**
+
+The Shiny App built into the package provides the user with rich graphical visualizations and detailed explorations. There are two improvements that can be applied to the inside app:   
+1. If the 'Covid Count and Deaths Analysis' series of graphs can convert the changing y-labels into the changing titles, it will make it easier for users to identify the chart is talking about what.  
+2. It will be better to remove the additional index for the tables, which can make the tables more concise.  
+
+
+### Is the documentation sufficient to get started? 
+
+1.The `covid19BFI` package with very well documents for most of the functions and datasets except for `color_check` and `pipe`.  Although `color_check()` is only used in `dt_styler ()`, and `pipe` is an easier way to use '%>%', providing documentation or additional instructions in Vignette to both of them would give the user a clearer picture of building process for the package.    
+2. `dateInput_range( )` and `data_wrangle()` do not have any example. It will be easier for the users to understand how to use it if there have some examples.   
+
+
+## Learned from `covid19BFI`
+
+
+I like the function of 'color_check' and the method of 'pipe', which inspired me a lot. In fact, when I made my r-package, I didn't think of making a function built into another function, which made the job easier. Also, the use of 'pipe' facilitates the subsequent r-package making process. After all, we don't need to use `@importfrom magrittr %>%` at all.   
+Moreover, the functions are well documented, both in terms of the explanation of each variable and how to use it.   
+
+
+## Summary
+
+Overall, `covid19BFI` is a very interesting and functional package. In exploring the built-in  Shiny app, I have found some very interesting discoveries, such as the independence of Ireland and Northern Ireland, an innovative topic extended by COVID-19. If you're interested in exploring this, welcome to Samuel Lyubic's [Github](https://github.com/etc5523-2020/r-package-assessment-samuellyu-2021) repository.
+
+
+
+## Appendix 
+
+### Documentation
+
+The package includes all the following forms of documentation:
+
+- [✔] **Installation instructions:** for the package is found in README  
+- [✔] **Vignette(s)** demonstrating major functionality that runs successfully locally  
+- [✔] **Function Documentation:** for all exported functions in R help  
+- [✔] **Examples** for all exported functions in R Help that run successfully locally  
+
+
+#### Comments
+
+- **Installation instructions :** The `readme` provides detailed installation instructions, which can let the users install it successfully.  
+- **Vignette(s) :** The Vignette page provides comprehensive information for the major functions and the usage of the built-in Shiny app.  
+- **Function Documentation :** All exported functions in R help with nice documentation.  
+- **Examples : ** All exported examples in R help can run successfully.  
+
+
+### Functionality
+
+- [✔] **Installation:** Installation succeeds as documented.  
+- [✔] **Functionality:** Any functional claims of the software been confirmed.  
+- [✔] **Automated tests:** Unit tests cover essential functions of the package and a reasonable range of inputs and conditions. All tests pass on the local machine.  
+
+
+#### Comments
+
+- **Installation :** The package can be installed successfully without any bugs.   
+- **Functionality :** All functions can be called in the built-in Shiny app.  
+- **Automated tests :** All unit tests passed without any errors.  
 
 
