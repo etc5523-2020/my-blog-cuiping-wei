@@ -7,7 +7,7 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 25 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 27 Oct 2020 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Peer review for covid19BFI</title>
       <dc:creator>Cuiping Wei</dc:creator>
@@ -15,7 +15,7 @@
       <description>Did you know that there are a lot of new R packages created every year? Thanks to the people who changed the world with code. In this blog, I want to explore and learn about the covid19BFI package created by Samuel Lyubic.</description>
       <category>R</category>
       <guid>https://awsome-number-story.netlify.app/posts/2020-10-24-bog4-r-package-peer-review</guid>
-      <pubDate>Sun, 25 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 27 Oct 2020 00:00:00 +0000</pubDate>
       <media:content url="https://awsome-number-story.netlify.app/posts/2020-10-24-bog4-r-package-peer-review/images/cover.png" medium="image" type="image/png" width="1736" height="944"/>
     </item>
     <item>
